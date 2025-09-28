@@ -1,10 +1,15 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import contactBackground from '../assets/contact.png';
 import SearchBar from '../ui/SearchBar';
-import blogPosts from '../data/blogPosts';
+
+
+
+
+
+import fetchPosts from "../data/blogPosts";
 
 const headingVariants = {
   hidden: { opacity: 0, y: 50 },
@@ -19,16 +24,28 @@ const textVariants = {
 const Blog = () => {
   const [searchQuery, setSearchQuery] = useState("");
 
-  
-  const filteredPosts = blogPosts.filter((post) =>
-    post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    post.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    post.author.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
+  useEffect(() => {
+    fetchPosts().then((data) => {
+      setPosts(data);
+      setLoading(false);
+    });
+  }, []);
+
+
+  const filteredPosts = posts.filter(
+    (post) =>
+      post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      post.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      post.author.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+  if (loading) return <p>Loading posts...</p>;
+  console.log("filteredPosts", filteredPosts)
   return (
     <>
-     
+
       <div
         className="relative h-screen bg-cover bg-center text-white flex flex-col items-center justify-center p-4 text-center"
         style={{ backgroundImage: `url(${contactBackground})` }}
@@ -54,7 +71,7 @@ const Blog = () => {
         </section>
       </div>
 
-     
+
       <div className="my-8">
         <SearchBar onSearch={setSearchQuery} />
       </div>
@@ -65,7 +82,7 @@ const Blog = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
             {filteredPosts.map((post) => (
               <motion.div
-                key={post.id}
+                key={post._id}
                 className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-2xl transition duration-300"
                 whileHover={{ scale: 1.03 }}
               >

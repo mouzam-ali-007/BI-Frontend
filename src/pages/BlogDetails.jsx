@@ -1,11 +1,27 @@
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import blogPosts from "../data/blogPosts";
+
+
+
+import fetchPosts from "../data/blogPosts";
+
 
 const BlogDetails = () => {
   const { id } = useParams();
-  const post = blogPosts.find((p) => p.id === parseInt(id));
+  const [post, setPost] = useState(null);
+
+
+
+
+  useEffect(() => {
+    fetchPosts().then((blogs) => {
+      const foundPost = blogs.find((p) => p.id === parseInt(id));
+      setPost(foundPost);
+    });
+  }, [id]);
+
+
 
   if (!post) {
     return (

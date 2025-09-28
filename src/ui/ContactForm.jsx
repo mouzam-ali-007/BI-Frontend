@@ -68,7 +68,7 @@ const ContactForm = () => {
     try {
       setLoading(true);
       setResponseMessage('');
-      const res = await fetch('http://localhost:8000/api/create', {
+      const res = await fetch('http://localhost:8000/api/contact', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
