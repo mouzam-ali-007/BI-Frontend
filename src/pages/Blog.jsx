@@ -5,10 +5,6 @@ import { Link } from 'react-router-dom';
 import contactBackground from '../assets/contact.png';
 import SearchBar from '../ui/SearchBar';
 
-
-
-
-
 import fetchPosts from "../data/blogPosts";
 
 const headingVariants = {
@@ -102,7 +98,7 @@ const Blog = () => {
             ))}
           </div>
         ) : (
-          <p className="text-center text-gray-500 text-lg">No blogs found for “{searchQuery}”.</p>
+          <p className="text-center text-gray-500 text-lg">No blogs found for “{searchQuery ? searchQuery : "given query"}”.</p>
         )}
       </section>
     </>
